@@ -35,7 +35,7 @@ To use the Budget App, simply open the `index.html` file in your web browser. No
 
 ## Demo
 
-You can see a live demo of the Budget App [here](#) (Replace with your demo link).
+You can see a live demo of the Budget App [here](#).
 
 ## Contributing
 
