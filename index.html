@@ -24,7 +24,10 @@
     };
   </script>
   <style>
-    .container::-webkit-scrollbar {
+    .list-container::-webkit-scrollbar {
+      display: none;
+    }
+    body::-webkit-scrollbar {
       display: none;
     }
 
@@ -86,7 +89,7 @@
 <body class="bg-gray-900 text-white font-sans">
   <div class="flex flex-col items-center justify-center w-full min-h-screen overflow-scroll">
     <div class="container mx-auto px-4 py-8 max-w-screen-full">
-      
+
       <div class="grid grid-cols-1 gap-8 sm:grid-cols-2">
         <div class="grid grid-cols-1 gap-8 sm:grid-cols-1">
           <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 md:gap-12">
@@ -171,9 +174,9 @@
             </div>
           </div>
         </div>
-  
+
         <!-- List -->
-        <div class=" p-6 bg-gray-800 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg">
+        <div class="p-6 bg-gray-800 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg">
           <div class="flex justify-between mb-4">
             <h3 class="text-xl font-semibold">Expense List</h3>
             <div class="flex items-center">
@@ -189,30 +192,33 @@
               </button>
             </div>
           </div>
-          <div class="grid grid-cols-1 gap-4 text-white" id="list">
-            <!-- Table Header -->
-            <div class="sublist-header grid grid-cols-5 gap-4 text-gray-400 font-semibold">
-              <div>Title</div>
-              <div>Cost</div>
-              <div>Category</div>
-              <div>Date</div>
-              <div>Actions</div>
-            </div>
-            <!-- List items will be dynamically added here -->
-            <!-- Example list item with edit and delete buttons -->
-            <div class="sublist-content">
-              <div class="product">Product Title</div>
-              <div class="amount">$10</div>
-              <div>Category</div>
-              <div>Date</div>
-              <div class="icons-container">
-                <div class="edit mr-[1.5rem] cursor-pointer">
-                  <i class="ri-edit-line text-black"></i>
-                </div>
-                <div class="delete mr-[1.5rem] cursor-pointer">
-                  <i class="ri-delete-bin-line"></i>
+          <div class="list-container h-80 overflow-y-auto">
+            <div class="grid grid-cols-1 gap-4 text-white" id="list">
+              <!-- Table Header -->
+              <div class="sublist-header grid grid-cols-5 gap-4 text-gray-400 font-semibold">
+                <div>Title</div>
+                <div>Cost</div>
+                <div>Category</div>
+                <div>Date</div>
+                <div>Actions</div>
+              </div>
+              <!-- List items will be dynamically added here -->
+              <!-- Example list item with edit and delete buttons -->
+              <div class="sublist-content">
+                <div class="product">Product Title</div>
+                <div class="amount">$10</div>
+                <div>Category</div>
+                <div>Date</div>
+                <div class="icons-container">
+                  <div class="edit mr-[1.5rem] cursor-pointer">
+                    <i class="ri-edit-line text-black"></i>
+                  </div>
+                  <div class="delete mr-[1.5rem] cursor-pointer">
+                    <i class="ri-delete-bin-line"></i>
+                  </div>
                 </div>
               </div>
+              <!-- Add more list items here -->
             </div>
           </div>
           <div class="mt-4 flex justify-self-start">
@@ -223,6 +229,7 @@
             </button>
           </div>
         </div>
+
       </div>
 
 
@@ -231,7 +238,7 @@
         <h3 class="text-xl font-semibold mb-4">Expense Summary</h3>
         <div class="flex justify-between mb-4">
           <button
-            class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 ease-in-out"
+            class="bg-blue-500 text-xl text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 ease-in-out"
             id="pie-chart-button">
             <i class="fas fa-chart-pie"></i> Pie Chart
           </button>
