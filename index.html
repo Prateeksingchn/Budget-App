@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Budget App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    .container::-webkit-scrollbar {
+      display: none;
+    }
+
+    .list {
+      background-color: #ffffff;
+      padding: 1.8em 2em;
+      box-shadow: 0 0.6em 1.2em rgba(28, 0, 80, 0.06);
+      border-radius: 0.6em;
+    }
+
+    .sublist-content {
+      width: 100%;
+      border-left: 0.3em solid #587ef4;
+      margin-bottom: 0.6em;
+      padding: 0.5em 1em;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    }
+
+    .product {
+      font-weight: 500;
+      color: white;
+    }
+
+    .amount {
+      color: white;
+      margin-left: 20%;
+    }
+
+    .icons-container {
+      width: 5em;
+      margin: 1.2em;
+      align-items: center;
+    }
+
+    .product-title {
+      margin-bottom: 1em;
+    }
+
+    .hide {
+      display: none;
+    }
+
+    .error {
+      color: #ff465a;
+    }
+
+    .edit,
+    .delete {
+      /* background: transparent; */
+      /* cursor: pointer; */
+      margin-right: 1.5em;
+      /* border: none; */
+
+    }
+  </style>
+</head>
+
+<body class="bg-gray-900 text-white font-sans">
+  <div class="flex flex-col items-center justify-center w-full min-h-screen overflow-scroll">
+    <div class="container mx-auto px-4 py-8 max-w-screen-full">
+      
+      <div class="grid grid-cols-1 gap-8 sm:grid-cols-2">
+        <div class="grid grid-cols-1 gap-1 sm:grid-cols-1">
+          <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 md:gap-4">
+            <!-- Budget -->
+            <div class="p-6 bg-gray-800 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg">
+              <h3 class="text-xl font-semibold mb-4">Budget</h3>
+              <p class="text-red-500 text-sm mb-2 hidden" id="budget-error" aria-live="polite">
+                Value cannot be empty or negative
+              </p>
+              <input type="number" id="total-amount"
+                class="block w-full px-4 py-2 border border-gray-600 rounded-md focus:outline-none focus:border-blue-500 mb-4 bg-gray-700 text-white transition-colors duration-300 hover:bg-gray-600"
+                placeholder="Enter Total Amount" aria-describedby="budget-error" />
+              <div class="flex justify-between mb-4">
+                <select id="budget-period"
+                  class="block px-4 py-2 border border-gray-600 rounded-md focus:outline-none focus:border-blue-500 bg-gray-700 text-white transition-colors duration-300 hover:bg-gray-600">
+                  <option value="monthly">Monthly</option>
+                  <option value="quarterly">Quarterly</option>
+                  <option value="annually">Annually</option>
+                </select>
+                <button type="submit"
+                  class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 ease-in-out"
+                  id="total-amount-button">
+                  Set Budget
+                </button>
+              </div>
+            </div>
+            <!-- Expenditure -->
+            <div class="p-6 bg-gray-800 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg">
+              <h3 class="text-xl font-semibold mb-4">Expenses</h3>
+              <p class="text-red-500 text-sm mb-2 hidden" id="product-title-error" aria-live="polite">
+                Values cannot be empty
+              </p>
+              <input type="text" id="product-title"
+                class="block w-full px-4 py-2 border border-gray-600 rounded-md focus:outline-none focus:border-blue-500 mb-4 bg-gray-700 text-white transition-colors duration-300 hover:bg-gray-600"
+                placeholder="Enter Title of Product" aria-describedby="product-title-error" />
+              <input type="number" id="user-amount"
+                class="block w-full px-4 py-2 border border-gray-600 rounded-md focus:outline-none focus:border-blue-500 mb-4 bg-gray-700 text-white transition-colors duration-300 hover:bg-gray-600"
+                placeholder="Enter Cost of Product" />
+              <div class="flex justify-between mb-4 gap-2">
+                <select id="category"
+                  class="block px-1 py-2 border border-gray-600 rounded-md focus:outline-none focus:border-blue-500 bg-gray-700 text-white transition-colors duration-300 hover:bg-gray-600">
+                  <option value="rent">Rent</option>
+                  <option value="food">Food</option>
+                  <option value="food">Grocery</option>
+                  <option value="bills">Bills</option>
+                  <option value="subscriptions">Subscriptions</option>
+                  <option value="clothes">Clothes</option>
+                  <option value="shoes">Shoes</option>
+                  <option value="entertainment">Entertainment</option>
+                  <option value="subscriptions">Insurance</option>
+                  <option value="subscriptions">Health Insurance</option>
+                  <option value="travel">Travel</option>
+                  <option value="utilities">Utilities</option>
+                  <option value="other">Other</option>
+                </select>
+                <input type="date" id="expense-date"
+                  class="block px-4 py-2 border border-gray-600 rounded-md focus:outline-none focus:border-blue-500 bg-gray-700 text-sm text-white transition-colors duration-300 hover:bg-gray-600" />
+              </div>
+              <div class="flex items-center justify-center">
+                <button type="submit"
+                  class="bg-blue-500 text-white px-20 py-2 rounded-md hover:bg-blue-600 transition duration-300 ease-in-out"
+                  id="check-amount">
+                  Add Expense
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- Output -->
+          <div
+            class="mt-8 p-6 bg-gray-800 rounded-lg shadow-md flex justify-between transition-all duration-300 hover:shadow-lg">
+            <div>
+              <p class="text-lg font-semibold">Total Budget</p>
+              <span id="amount">0</span>
+            </div>
+            <div>
+              <p class="text-lg font-semibold">Expenses</p>
+              <span id="expenditure-value">0</span>
+            </div>
+            <div>
+              <p class="text-lg font-semibold">Balance</p>
+              <span id="balance-amount">0</span>
+            </div>
+          </div>
+        </div>
+  
+        <!-- List -->
+        <div class="p-6 bg-gray-800 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg">
+          <div class="flex justify-between mb-4">
+            <h3 class="text-xl font-semibold">Expense List</h3>
+            <div class="flex items-center">
+              <button
+                class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 ease-in-out mr-2"
+                id="sort-button">
+                <i class="fas fa-sort"></i> Sort
+              </button>
+              <button
+                class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 ease-in-out"
+                id="filter-button">
+                <i class="fas fa-filter"></i> Filter
+              </button>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 gap-4 text-white" id="list">
+            <!-- Table Header -->
+            <div class="sublist-header grid grid-cols-5 gap-4 text-gray-400 font-semibold">
+              <div>Title</div>
+              <div>Cost</div>
+              <div>Category</div>
+              <div>Date</div>
+              <div>Actions</div>
+            </div>
+            <!-- List items will be dynamically added here -->
+            <!-- Example list item with edit and delete buttons -->
+            <div class="sublist-content">
+              <div class="product">Product Title</div>
+              <div class="amount">$10</div>
+              <div>Category</div>
+              <div>Date</div>
+              <div class="icons-container">
+                <div class="edit mr-[1.5rem] cursor-pointer">
+                  <i class="ri-edit-line text-black"></i>
+                </div>
+                <div class="delete mr-[1.5rem] cursor-pointer">
+                  <i class="ri-delete-bin-line"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Summary -->
+      <div class="mt-8 p-6 bg-gray-800 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg">
+        <h3 class="text-xl font-semibold mb-4">Expense Summary</h3>
+        <div class="flex justify-between mb-4">
+          <button
+            class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 ease-in-out"
+            id="pie-chart-button">
+            <i class="fas fa-chart-pie"></i> Pie Chart
+          </button>
+          <button
+            class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 ease-in-out"
+            id="bar-chart-button">
+            <i class="fas fa-chart-bar"></i> Bar Chart
+          </button>
+        </div>
+        <div id="chart-container" class="h-96"></div>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+
+</html>
