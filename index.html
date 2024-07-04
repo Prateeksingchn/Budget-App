@@ -4,11 +4,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Budget Buddy - Your Personal Finance Manager</title>
+  <title>BudgetPro - Smart Personal Finance</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -19,9 +19,14 @@
             sans: ["Inter", "sans-serif"],
           },
           colors: {
-            'budget-blue': '#3B82F6',
-            'budget-indigo': '#6366F1',
-            'budget-purple': '#8B5CF6',
+            'primary': '#6366F1',
+            'primary-dark': '#4F46E5',
+            'secondary': '#10B981',
+            'secondary-dark': '#059669',
+            'tertiary': '#F59E0B',
+            'tertiary-dark': '#D97706',
+            'background': '#F3F4F6',
+            'card': '#FFFFFF',
           }
         },
       },
@@ -32,11 +37,11 @@
       background-color: #F3F4F6;
     }
     .gradient-bg {
-      background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+      background: linear-gradient(135deg, #6366F1, #10B981);
     }
     .card {
       background-color: white;
-      border-radius: 0.5rem;
+      border-radius: 1rem;
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
       transition: all 0.3s ease;
     }
@@ -44,35 +49,62 @@
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     }
     .input-style {
-      @apply block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:border-budget-blue focus:outline-none focus:ring;
+      @apply block w-full px-4 py-3 mt-1 text-gray-700 bg-white border-2 border-gray-300 rounded-md focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 transition duration-300 ease-in-out;
+    }
+    .input-style:focus {
+      @apply border-primary shadow-md;
+    }
+    .label-style {
+      @apply block text-sm font-medium text-gray-700 mb-1 transition duration-300 ease-in-out;
+    }
+    .input-style:focus + .label-style {
+      @apply text-primary;
     }
     .btn-primary {
-      @apply px-4 py-2 font-bold text-white bg-budget-blue rounded-md hover:bg-blue-600 focus:outline-none focus:shadow-outline transition duration-300 ease-in-out;
+      @apply px-6 py-3 font-semibold text-white bg-primary rounded-md hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-opacity-50 transition duration-300 ease-in-out shadow-md hover:shadow-lg;
     }
     .btn-secondary {
-      @apply px-4 py-2 font-bold text-budget-blue bg-white border border-budget-blue rounded-md hover:bg-gray-100 focus:outline-none focus:shadow-outline transition duration-300 ease-in-out;
+      @apply px-6 py-3 font-semibold text-primary bg-white border-2 border-primary rounded-md hover:bg-primary hover:text-white focus:outline-none focus:ring focus:ring-primary focus:ring-opacity-50 transition duration-300 ease-in-out shadow-md hover:shadow-lg;
+    }
+    .btn-tertiary {
+      @apply px-6 py-3 font-semibold text-white bg-tertiary rounded-md hover:bg-tertiary-dark focus:outline-none focus:ring focus:ring-tertiary focus:ring-opacity-50 transition duration-300 ease-in-out shadow-md hover:shadow-lg;
     }
   </style>
 </head>
 
 <body class="font-sans text-gray-800">
-  <header class="gradient-bg text-white py-6">
+  <header class="gradient-bg text-white py-12">
     <div class="container mx-auto px-4">
-      <h1 class="text-3xl font-bold">Budget Buddy</h1>
-      <p class="mt-2">Your Personal Finance Manager</p>
+      <h1 class="text-5xl font-bold">BudgetPro</h1>
+      <p class="mt-2 text-xl opacity-80">Smart Personal Finance Management</p>
     </div>
   </header>
 
-  <main class="container mx-auto px-4 py-8">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <section class="card p-6">
-        <h2 class="text-2xl font-semibold mb-4">Set Your Budget</h2>
+  <main class="container mx-auto px-4 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+      <div class="card p-6">
+        <h3 class="text-lg font-semibold text-gray-600 mb-2">Total Budget</h3>
+        <p id="amount" class="text-4xl font-bold text-primary">$0</p>
+      </div>
+      <div class="card p-6">
+        <h3 class="text-lg font-semibold text-gray-600 mb-2">Total Expenses</h3>
+        <p id="expenditure-value" class="text-4xl font-bold text-secondary">$0</p>
+      </div>
+      <div class="card p-6">
+        <h3 class="text-lg font-semibold text-gray-600 mb-2">Remaining Balance</h3>
+        <p id="balance-amount" class="text-4xl font-bold text-tertiary">$0</p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+      <section class="card p-8">
+        <h2 class="text-2xl font-semibold mb-6 text-primary">Set Your Budget</h2>
         <div class="mb-4">
-          <label for="total-amount" class="block text-sm font-medium text-gray-700">Budget Amount</label>
+          <label for="total-amount" class="label-style">Budget Amount</label>
           <input type="number" id="total-amount" class="input-style" placeholder="Enter Total Amount" />
         </div>
-        <div class="mb-4">
-          <label for="budget-period" class="block text-sm font-medium text-gray-700">Budget Period</label>
+        <div class="mb-6">
+          <label for="budget-period" class="label-style">Budget Period</label>
           <select id="budget-period" class="input-style">
             <option value="monthly">Monthly</option>
             <option value="quarterly">Quarterly</option>
@@ -83,88 +115,74 @@
         <p id="budget-error" class="text-red-500 text-sm mt-2 hidden"></p>
       </section>
 
-      <section class="card p-6">
-        <h2 class="text-2xl font-semibold mb-4">Add Expense</h2>
+      <section class="card p-8">
+        <h2 class="text-2xl font-semibold mb-6 text-secondary">Add Expense</h2>
         <div class="mb-4">
-          <label for="product-title" class="block text-sm font-medium text-gray-700">Expense Title</label>
+          <label for="product-title" class="label-style">Expense Title</label>
           <input type="text" id="product-title" class="input-style" placeholder="Enter Title of Expense" />
         </div>
         <div class="mb-4">
-          <label for="user-amount" class="block text-sm font-medium text-gray-700">Expense Amount</label>
+          <label for="user-amount" class="label-style">Expense Amount</label>
           <input type="number" id="user-amount" class="input-style" placeholder="Enter Cost of Expense" />
         </div>
-        <div class="grid grid-cols-2 gap-4 mb-4">
+        <div class="grid grid-cols-2 gap-4 mb-6">
           <div>
-            <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
+            <label for="category" class="label-style">Category</label>
             <select id="category" class="input-style">
               <option value="food">Food</option>
               <option value="rent">Rent</option>
               <option value="utilities">Utilities</option>
               <option value="entertainment">Entertainment</option>
+              <option value="transportation">Transportation</option>
+              <option value="healthcare">Healthcare</option>
+              <option value="education">Education</option>
               <option value="other">Other</option>
             </select>
           </div>
           <div>
-            <label for="expense-date" class="block text-sm font-medium text-gray-700">Date</label>
+            <label for="expense-date" class="label-style">Date</label>
             <input type="date" id="expense-date" class="input-style" />
           </div>
         </div>
-        <button id="check-amount" class="btn-primary w-full">Add Expense</button>
+        <button id="check-amount" class="btn-secondary w-full">Add Expense</button>
         <p id="product-title-error" class="text-red-500 text-sm mt-2 hidden"></p>
       </section>
     </div>
 
-    <section class="mt-8 card p-6">
-      <h2 class="text-2xl font-semibold mb-4">Budget Summary</h2>
-      <div class="grid grid-cols-3 gap-4 text-center">
-        <div class="bg-blue-100 p-4 rounded-lg">
-          <p class="text-sm text-gray-600">Total Budget</p>
-          <p id="amount" class="text-2xl font-bold text-budget-blue">$0</p>
-        </div>
-        <div class="bg-purple-100 p-4 rounded-lg">
-          <p class="text-sm text-gray-600">Expenses</p>
-          <p id="expenditure-value" class="text-2xl font-bold text-budget-purple">$0</p>
-        </div>
-        <div class="bg-green-100 p-4 rounded-lg">
-          <p class="text-sm text-gray-600">Balance</p>
-          <p id="balance-amount" class="text-2xl font-bold text-green-600">$0</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="mt-8 card p-6">
-      <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-semibold">Expense List</h2>
-        <div>
-          <button id="sort-button" class="btn-secondary mr-2">
-            <i class="fas fa-sort"></i> Sort
+    <section class="card p-8 mb-12">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-semibold text-tertiary">Expense List</h2>
+        <div class="space-x-2">
+          <button id="sort-button" class="btn-tertiary">
+            <i class="fas fa-sort mr-2"></i>Sort
           </button>
-          <button id="filter-button" class="btn-secondary">
-            <i class="fas fa-filter"></i> Filter
+          <button id="filter-button" class="btn-tertiary">
+            <i class="fas fa-filter mr-2"></i>Filter
           </button>
         </div>
       </div>
-      <div id="list" class="space-y-2 mb-4"></div>
+      <div id="list" class="space-y-4 max-h-96 overflow-y-auto mb-6"></div>
       <button id="load-more-button" class="btn-secondary w-full mt-4">Load More</button>
     </section>
 
-    <section class="mt-8 card p-6">
-      <h2 class="text-2xl font-semibold mb-4">Expense Analysis</h2>
-      <div class="flex justify-center space-x-4 mb-4">
+    <section class="card p-8">
+      <h2 class="text-2xl font-semibold mb-6 text-primary">Expense Analysis</h2>
+      <div class="flex justify-center space-x-4 mb-6">
         <button id="pie-chart-button" class="btn-primary">
-          <i class="fas fa-chart-pie"></i> Pie Chart
+          <i class="fas fa-chart-pie mr-2"></i>Pie Chart
         </button>
         <button id="bar-chart-button" class="btn-primary">
-          <i class="fas fa-chart-bar"></i> Bar Chart
+          <i class="fas fa-chart-bar mr-2"></i>Bar Chart
         </button>
       </div>
       <div id="chart-container" class="h-96"></div>
     </section>
   </main>
 
-  <footer class="bg-gray-800 text-white py-4 mt-8">
+  <footer class="bg-gray-800 text-white py-8 mt-12">
     <div class="container mx-auto px-4 text-center">
-      <p>&copy; 2024 Budget Buddy. All rights reserved.</p>
+      <p class="text-lg">&copy; 2024 BudgetPro. All rights reserved.</p>
+      <p class="mt-2 text-gray-400">Designed for smart personal finance management</p>
     </div>
   </footer>
 
