@@ -19,8 +19,8 @@
             sans: ["Inter", "sans-serif"],
           },
           colors: {
-            'primary': '#6366F1',
-            'primary-dark': '#4F46E5',
+            'primary': '#4F46E5',
+            'primary-dark': '#4338CA',
             'secondary': '#10B981',
             'secondary-dark': '#059669',
             'tertiary': '#F59E0B',
@@ -37,7 +37,7 @@
       background-color: #F3F4F6;
     }
     .gradient-bg {
-      background: linear-gradient(135deg, #6366F1, #10B981);
+      background: linear-gradient(135deg, #4F46E5, #10B981);
     }
     .card {
       background-color: white;
@@ -47,9 +47,13 @@
     }
     .card:hover {
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      transform: translateY(-2px);
     }
     .input-style {
       @apply block w-full px-4 py-3 mt-1 text-gray-700 bg-white border-2 border-gray-300 rounded-md focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 transition duration-300 ease-in-out;
+    }
+    .input-style:hover {
+      @apply border-gray-400;
     }
     .input-style:focus {
       @apply border-primary shadow-md;
@@ -60,96 +64,150 @@
     .input-style:focus + .label-style {
       @apply text-primary;
     }
+    .btn {
+      @apply px-6 py-3 font-semibold rounded-md focus:outline-none focus:ring transition duration-300 ease-in-out shadow-md hover:shadow-lg transform hover:-translate-y-1;
+    }
     .btn-primary {
-      @apply px-6 py-3 font-semibold text-white bg-primary rounded-md hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-opacity-50 transition duration-300 ease-in-out shadow-md hover:shadow-lg;
+      @apply btn text-white bg-primary hover:bg-primary-dark focus:ring-primary focus:ring-opacity-50;
     }
     .btn-secondary {
-      @apply px-6 py-3 font-semibold text-primary bg-white border-2 border-primary rounded-md hover:bg-primary hover:text-white focus:outline-none focus:ring focus:ring-primary focus:ring-opacity-50 transition duration-300 ease-in-out shadow-md hover:shadow-lg;
+      @apply btn text-primary bg-white border-2 border-primary hover:bg-primary hover:text-white focus:ring-primary focus:ring-opacity-50;
     }
     .btn-tertiary {
-      @apply px-6 py-3 font-semibold text-white bg-tertiary rounded-md hover:bg-tertiary-dark focus:outline-none focus:ring focus:ring-tertiary focus:ring-opacity-50 transition duration-300 ease-in-out shadow-md hover:shadow-lg;
+      @apply btn text-white bg-tertiary hover:bg-tertiary-dark focus:ring-tertiary focus:ring-opacity-50;
+    }
+    .nav-link {
+      @apply text-primary hover:text-primary-dark font-medium relative;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      bottom: -4px;
+      left: 0;
+      background-color: #4F46E5;
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+    .nav-link:hover::after {
+      transform: scaleX(1);
     }
   </style>
 </head>
 
 <body class="font-sans text-gray-800">
-  <header class="gradient-bg text-white py-12">
-    <div class="container mx-auto px-4">
-      <h1 class="text-5xl font-bold">BudgetPro</h1>
-      <p class="mt-2 text-xl opacity-80">Smart Personal Finance Management</p>
+  <header class="gradient-bg text-white py-8">
+    <div class="container mx-auto px-4 text-center">
+      <h1 class="text-6xl font-bold mb-4">BudgetPro</h1>
+      <p class="text-2xl opacity-80">Smart Personal Finance Management</p>
     </div>
   </header>
 
-  <main class="container mx-auto px-4 py-12">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-      <div class="card p-6">
-        <h3 class="text-lg font-semibold text-gray-600 mb-2">Total Budget</h3>
-        <p id="amount" class="text-4xl font-bold text-primary">$0</p>
-      </div>
-      <div class="card p-6">
-        <h3 class="text-lg font-semibold text-gray-600 mb-2">Total Expenses</h3>
-        <p id="expenditure-value" class="text-4xl font-bold text-secondary">$0</p>
-      </div>
-      <div class="card p-6">
-        <h3 class="text-lg font-semibold text-gray-600 mb-2">Remaining Balance</h3>
-        <p id="balance-amount" class="text-4xl font-bold text-tertiary">$0</p>
-      </div>
+  <nav class="bg-white shadow-md sticky top-0 z-10">
+    <div class="container mx-auto px-4">
+      <ul class="flex justify-center space-x-6 py-4">
+        <li><a href="#overview" class="nav-link">Overview</a></li>
+        <li><a href="#budget" class="nav-link">Set Budget</a></li>
+        <li><a href="#expenses" class="nav-link">Expenses</a></li>
+        <li><a href="#analysis" class="nav-link">Analysis</a></li>
+      </ul>
     </div>
+  </nav>
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-      <section class="card p-8">
-        <h2 class="text-2xl font-semibold mb-6 text-primary">Set Your Budget</h2>
-        <div class="mb-4">
-          <label for="total-amount" class="label-style">Budget Amount</label>
-          <input type="number" id="total-amount" class="input-style" placeholder="Enter Total Amount" />
+  <main class="container w-full flex gap-10 mx-auto px-4 py-10">
+    <div class="w-3/4">
+      <section id="overview" class="mb-16 ">
+        <h2 class="text-4xl font-extrabold mb-8 text-center">Financial Overview</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="card p-6 text-center">
+            <h3 class="text-xl font-semibold text-gray-600 mb-2">Total Budget</h3>
+            <p id="amount" class="text-4xl font-bold text-primary">$0</p>
+            <p id="budget-period" class="text-sm text-gray-500 mt-2">Monthly</p>
+          </div>
+          <div class="card p-6 text-center">
+            <h3 class="text-xl font-semibold text-gray-600 mb-2">Total Expenses</h3>
+            <p id="expenditure-value" class="text-4xl font-bold text-secondary">$0</p>
+            <p class="text-sm text-gray-500 mt-2">This Period</p>
+          </div>
+          <div class="card p-6 text-center">
+            <h3 class="text-xl font-semibold text-gray-600 mb-2">Remaining Balance</h3>
+            <p id="balance-amount" class="text-4xl font-bold text-tertiary">$0</p>
+            <p class="text-sm text-gray-500 mt-2">Available to Spend</p>
+          </div>
         </div>
-        <div class="mb-6">
-          <label for="budget-period" class="label-style">Budget Period</label>
-          <select id="budget-period" class="input-style">
-            <option value="monthly">Monthly</option>
-            <option value="quarterly">Quarterly</option>
-            <option value="annually">Annually</option>
-          </select>
-        </div>
-        <button id="total-amount-button" class="btn-primary w-full">Set Budget</button>
-        <p id="budget-error" class="text-red-500 text-sm mt-2 hidden"></p>
       </section>
-
-      <section class="card p-8">
-        <h2 class="text-2xl font-semibold mb-6 text-secondary">Add Expense</h2>
-        <div class="mb-4">
-          <label for="product-title" class="label-style">Expense Title</label>
-          <input type="text" id="product-title" class="input-style" placeholder="Enter Title of Expense" />
-        </div>
-        <div class="mb-4">
-          <label for="user-amount" class="label-style">Expense Amount</label>
-          <input type="number" id="user-amount" class="input-style" placeholder="Enter Cost of Expense" />
-        </div>
-        <div class="grid grid-cols-2 gap-4 mb-6">
-          <div>
-            <label for="category" class="label-style">Category</label>
-            <select id="category" class="input-style">
-              <option value="food">Food</option>
-              <option value="rent">Rent</option>
-              <option value="utilities">Utilities</option>
-              <option value="entertainment">Entertainment</option>
-              <option value="transportation">Transportation</option>
-              <option value="healthcare">Healthcare</option>
-              <option value="education">Education</option>
-              <option value="other">Other</option>
+  
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16 ">
+        <section id="budget" class="card p-8">
+          <h2 class="text-2xl font-semibold mb-6 text-primary">Set Your Budget</h2>
+          <div class="mb-4">
+            <label for="total-amount" class="label-style">Budget Amount</label>
+            <input type="number" id="total-amount" class="input-style" placeholder="Enter Total Amount" />
+          </div>
+          <div class="mb-6">
+            <label for="budget-period" class="label-style">Budget Period</label>
+            <select id="budget-period" class="input-style">
+              <option value="monthly">Monthly</option>
+              <option value="quarterly">Quarterly</option>
+              <option value="annually">Annually</option>
             </select>
           </div>
-          <div>
-            <label for="expense-date" class="label-style">Date</label>
-            <input type="date" id="expense-date" class="input-style" />
+          <button id="total-amount-button" class="btn-primary w-full">Set Budget</button>
+          <p id="budget-error" class="text-red-500 text-sm mt-2 hidden"></p>
+        </section>
+  
+        <section id="expenses" class="card p-8">
+          <h2 class="text-2xl font-semibold mb-6 text-secondary">Add Expense</h2>
+          <div class="mb-4">
+            <label for="product-title" class="label-style">Expense Title</label>
+            <input type="text" id="product-title" class="input-style" placeholder="Enter Title of Expense" />
           </div>
+          <div class="mb-4">
+            <label for="user-amount" class="label-style">Expense Amount</label>
+            <input type="number" id="user-amount" class="input-style" placeholder="Enter Cost of Expense" />
+          </div>
+          <div class="grid grid-cols-2 gap-4 mb-6">
+            <div>
+              <label for="category" class="label-style">Category</label>
+              <select id="category" class="input-style">
+                <option value="food">Food</option>
+                <option value="rent">Rent</option>
+                <option value="utilities">Utilities</option>
+                <option value="entertainment">Entertainment</option>
+                <option value="transportation">Transportation</option>
+                <option value="healthcare">Healthcare</option>
+                <option value="education">Education</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div>
+              <label for="expense-date" class="label-style">Date</label>
+              <input type="date" id="expense-date" class="input-style" />
+            </div>
+          </div>
+          <button id="check-amount" class="btn-secondary w-full">Add Expense</button>
+          <p id="product-title-error" class="text-red-500 text-sm mt-2 hidden"></p>
+        </section>
+      </div>
+  
+      <section id="analysis" class="card p-8">
+        <h2 class="text-2xl font-semibold mb-6 text-primary">Expense Analysis</h2>
+        <div class="flex justify-center space-x-4 mb-6">
+          <button id="pie-chart-button" class="btn-primary">
+            <i class="fas fa-chart-pie mr-2"></i>Pie Chart
+          </button>
+          <button id="bar-chart-button" class="btn-primary">
+            <i class="fas fa-chart-bar mr-2"></i>Bar Chart
+          </button>
         </div>
-        <button id="check-amount" class="btn-secondary w-full">Add Expense</button>
-        <p id="product-title-error" class="text-red-500 text-sm mt-2 hidden"></p>
+        <div id="chart-container" class="h-96"></div>
       </section>
     </div>
 
-    <section class="card p-8 mb-12">
+
+
+    <section class="card p-8 w-1/4 mx-auto">
       <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-semibold text-tertiary">Expense List</h2>
         <div class="space-x-2">
@@ -164,20 +222,9 @@
       <div id="list" class="space-y-4 max-h-96 overflow-y-auto mb-6"></div>
       <button id="load-more-button" class="btn-secondary w-full mt-4">Load More</button>
     </section>
-
-    <section class="card p-8">
-      <h2 class="text-2xl font-semibold mb-6 text-primary">Expense Analysis</h2>
-      <div class="flex justify-center space-x-4 mb-6">
-        <button id="pie-chart-button" class="btn-primary">
-          <i class="fas fa-chart-pie mr-2"></i>Pie Chart
-        </button>
-        <button id="bar-chart-button" class="btn-primary">
-          <i class="fas fa-chart-bar mr-2"></i>Bar Chart
-        </button>
-      </div>
-      <div id="chart-container" class="h-96"></div>
-    </section>
   </main>
+
+  
 
   <footer class="bg-gray-800 text-white py-8 mt-12">
     <div class="container mx-auto px-4 text-center">

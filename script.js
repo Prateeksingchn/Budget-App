@@ -129,19 +129,49 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const createExpenseListItem = (expense, index) => {
     const listItem = document.createElement("div");
-    listItem.classList.add("sublist-content", "text-gray-900", "bg-blue-500", "rounded-md", "p-4", "mb-2");
+    listItem.classList.add(
+      "sublist-content",
+      "text-gray-900",
+      "bg-grey-200",
+      "rounded-md",
+      "py-4",
+      "px-2",
+      "mb-2"
+    );
     listItem.innerHTML = `
-      <span class="product">${expense.title}</span>
-      <span class="amount">${formatCurrency(expense.amount)}</span>
-      <span class="category">${expense.category}</span>
-      <span class="date">${formatDate(expense.date)}</span>
-      <div class="icons-container flex">
-        <button class="edit mr-2" data-index="${index}"><i class="fa-solid fa-pen-to-square"></i></button>
-        <button class="delete" data-index="${index}"><i class="fa-solid fa-trash-can"></i></button>
+      <div>
+        <table>
+          <thead>
+            <tr class="flex justify-evenly gap-12">
+              <th>Category</th>
+              <th>Title</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="flex justify-evenly gap-10">
+              <td>${expense.category}</td>
+              <td>${expense.title}</td>
+              <td>${formatCurrency(expense.amount)}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="flex justify-between items-center mt-2">
+          <span class="date text-sm text-gray-600">${formatDate(expense.date)}</span>
+          <div class="icons-container flex gap-4">
+            <button class="edit" data-index="${index}" aria-label="Edit Expense">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+            <button class="delete" data-index="${index}" aria-label="Delete Expense">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+          </div>
+        </div>
       </div>
     `;
     return listItem;
   };
+  
 
   const filterExpenses = (expensesToFilter) => {
     return filterCategory === 'all' 
